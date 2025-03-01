@@ -7,28 +7,39 @@
 </head>
 <body>
     <h1>Список сотрудников</h1>
+    <button onclick="fetchData()">Обновить</button>
     <ul id="data-list"></ul>
 
     <script>
         const API_URL = "https://bzmspuewrqtjdjqsnnid.supabase.co";
         const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6bXNwdWV3cnF0amRqcXNubmlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA4MzAwOTEsImV4cCI6MjA1NjQwNjA5MX0.QtJcbzg2iRrIqYIQA7Va8ArWOEU-5B4h6fes4MqMge8";
 
-        fetch(API_URL, {
-            headers: {
-                apikey: API_KEY,
-                Authorization: `Bearer ${API_KEY}`
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const list = document.getElementById("data-list");
-            data.forEach(item => {
-                const li = document.createElement("li");
-                li.textContent = `${item.name} - ${item.position}`;
-                list.appendChild(li);
-            });
-        })
-        .catch(error => console.error("Ошибка загрузки данных:", error));
+        function fetchData() {
+            fetch(API_URL, {
+                headers: {
+                    apikey: API_KEY,
+                    Authorization: `Bearer ${API_KEY}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById("data-list");
+                list.innerHTML = ""; // Очищаем список перед обновлением
+
+                data.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = `${item.name} - ${item.position}`;
+                    list.appendChild(li);
+                });
+            })
+            .catch(error => console.error("Ошибка загрузки данных:", error));
+        }
+
+        // Обновление данных каждые 10 секунд
+        setInterval(fetchData, 10000);
+
+        // Первоначальная загрузка данных
+        fetchData();
     </script>
 </body>
 </html>
