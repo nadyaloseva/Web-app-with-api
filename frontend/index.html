@@ -11,14 +11,17 @@
     <ul id="data-list"></ul>
 
     <script>
-        const API_URL = "https://bzmspuewrqtjdjqsnnid.supabase.co";
+        const API_URL = "https://bzmspuewrqtjdjqsnnid.supabase.co/rest/v1/employees"; // Добавляем путь к таблице
         const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6bXNwdWV3cnF0amRqcXNubmlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA4MzAwOTEsImV4cCI6MjA1NjQwNjA5MX0.QtJcbzg2iRrIqYIQA7Va8ArWOEU-5B4h6fes4MqMge8";
 
         function fetchData() {
             fetch(API_URL, {
+                method: "GET",
                 headers: {
                     apikey: API_KEY,
-                    Authorization: `Bearer ${API_KEY}`
+                    Authorization: `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json",
+                    "Cache-Control": "no-cache"
                 }
             })
             .then(response => response.json())
@@ -28,7 +31,7 @@
 
                 data.forEach(item => {
                     const li = document.createElement("li");
-                    li.textContent = `${item.name} - ${item.position}`;
+                    li.textContent = `ID: ${item.id}, Дата: ${item.created_at}, Зарплата: ${item.salary}`;
                     list.appendChild(li);
                 });
             })
